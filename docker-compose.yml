@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+    service:
+        # container_name: racing_car_pinet_detec_line
+        build:
+            context: ./
+            dockerfile: dockerfile
+        container_name: racing_car_pinet_detec_line
+        ports:
+            - 5005:80
+        networks:
+            - service_net
+        restart: unless-stopped
+        volumes:
+            - ./:/base
+        deploy:
+          resources:
+            reservations:
+              devices:
+              - driver: nvidia
+                count: 1
+                device_ids: ['2']
+                capabilities: [gpu]
+networks:
+    service_net:
+        external: true
